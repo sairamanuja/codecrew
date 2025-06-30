@@ -1,33 +1,31 @@
-# Use an official Python runtime as a parent image
+# Use official Python image
 FROM python:3.11-slim
 
-# Set environment variables
+# Environment settings
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
 
-# Set work directory
+# Set working directory
 WORKDIR /app
 
-# Install system dependencies (for spacy, numpy, PyMuPDF, etc.)
+# Install system dependencies
 RUN apt-get update && \
     apt-get install -y gcc build-essential libmupdf-dev && \
     rm -rf /var/lib/apt/lists/*
 
-# Copy requirements
-COPY requirements.txt .
-
 # Install Python dependencies
+COPY requirements.txt .
 RUN pip install --upgrade pip
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy project files
+# Copy all project files
 COPY . .
 
-# Expose the port Flask will run on
+# Expose port (Flask runs on 8000)
 EXPOSE 8000
 
-# Set environment variables for Flask
+# Define environment variable for Flask (optional but useful)
 ENV FLASK_APP=app.py
 
-# Start the app with Gunicorn for production
+# Start the app using Gunicorn
 CMD ["gunicorn", "--bind", "0.0.0.0:8000", "app:app"]
