@@ -1,0 +1,13 @@
+# Node modules
+frontend/node_modules/
+
+# Environment files
+backend/.env
+frontend/.env
+
+# Python cache
+backend/services/__pycache__/
+
+# OS generated files
+.DS_Store
+Thumbs.db 
